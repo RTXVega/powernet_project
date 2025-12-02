@@ -1,0 +1,18 @@
+{
+  "generators": [
+    { "id": "G1", "capacity": 100 },
+    { "id": "G2", "capacity": 75 }
+  ],
+  "houses": [
+    { "id": "M1", "consumption": "NORMAL" },
+    { "id": "M2", "consumption": "HIGH" },
+    { "id": "M3", "consumption": "LOW" },
+    { "id": "M4", "consumption": "NORMAL" }
+  ],
+  "connections": [
+    { "houseId": "M1", "generatorId": "G1" },
+    { "houseId": "M2", "generatorId": "G1" },
+    { "houseId": "M3", "generatorId": "G2" },
+    { "houseId": "M4", "generatorId": "G2" }
+  ]
+}
