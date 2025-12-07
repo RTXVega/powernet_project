@@ -1,0 +1,16 @@
+generateur(G1, 100).
+generateur(G2, 100).
+
+maison(M1, BASSE).
+maison(M2, BASSE).
+maison(M3, FORTE).
+maison(M4, NORMAL).
+maison(M5, NORMAL).
+maison(M6, BASSE).
+
+connexion(M1, G1).
+connexion(M2, G1).
+connexion(M3, G1).
+connexion(M4, G2).
+connexion(M5, G2).
+connexion(M6, G2).
