@@ -1,4 +1,4 @@
-# Réseau de distribution d'électricité. Partie 1.
+# Réseau de distribution d'électricité.
 
 **Fait par (TP du jeudi 13h30-16h30)**  
 Almas KASSYMBEKOV  
