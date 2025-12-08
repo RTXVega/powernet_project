@@ -1,12 +1,10 @@
 package powernet.model;
 
-import org.junit.jupiter.api.BeforeEach;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Consumption Enum Tests")
 class ConsumptionTest {
@@ -42,4 +40,5 @@ class ConsumptionTest {
     void testConsumptionEnumSize() {
         assertThat(Consumption.values()).hasSize(3);
     }
+    
 }

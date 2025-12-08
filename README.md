@@ -34,5 +34,10 @@ Depuis un IDE:
 Depuis la ligne de commande:
 
 Se placer à la racine du projet:
+
 javac $(find src/main/java -name "*.java")
 java -cp src/main/java powernet.cli.App --lambda 10
+
+```
+mvn clean javafx:run
+```
