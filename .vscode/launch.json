@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+        "type": "java",
+        "name": "PowerNetApp",
+        "request": "launch",
+        "mainClass": "powernet.fx.PowerNetApp",
+        "projectName": "powernet"
+    },
+    {
+        "type": "java",
+        "name": "App",
+        "request": "launch",
+        "mainClass": "powernet.cli.App",
+        "projectName": "powernet"
+    },
+    {
+        "type": "java",
+        "name": "App",
+        "request": "launch",
+        "mainClass": "App",
+        "projectName": "powernet_project_f6e443b1"
+    },
+    {
+        "type": "java",
+        "name": "Run App (Maven)",
+        "request": "launch",
+        "mainClass": "powernet.cli.App",
+        "projectName": "POWERENT_PROJECT",
+        "args": ""
+    }
+]
+}

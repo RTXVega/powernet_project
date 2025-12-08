@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": [
+        "src/main/java/powernet/cli"
+    ],
+    "java.project.referencedLibraries": [],
+      "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.gradle.enabled": false,
+  "java.import.maven.enabled": true,
+  "java.compile.nullAnalysis.mode": "automatic"
+}
