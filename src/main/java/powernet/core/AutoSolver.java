@@ -1,101 +1,186 @@
 package powernet.core;
 
+import powernet.model.Generator;
 import powernet.model.House;
-
-import java.util.Map;
+import java.util.*;
 
 /**
- * Résolution automatique : amélioration du réseau
- * par recherche locale sur les affectations maison → générateur.
+ * Solveur Hybride : Heuristique Constructive + Recuit Simulé.
+ * Cette version est conçue pour trouver des coûts minimaux très rapidement
+ * en commençant par une distribution intelligente avant d'optimiser.
  */
 public class AutoSolver {
 
-    /** Nombre maximal de passes complètes sur l'ensemble des maisons. */
     private final int maxIterations;
+    private final double initialTemperature;
+    private final double coolingRate;
 
-    /**
-     * Construit un solveur automatique avec un nombre maximal d'itérations.
-     *
-     * @param maxIterations nombre maximal de passes de recherche locale
-     */
     public AutoSolver(int maxIterations) {
         this.maxIterations = maxIterations;
+        this.initialTemperature = 1000.0; // Température plus élevée pour plus de liberté au début
+        this.coolingRate = 0.9995; // Refroidissement très lent pour explorer finement
     }
 
     /**
-     * Améliore (si possible) la répartition des maisons entre les générateurs.
-     * L'algorithme parcourt les maisons et tente de les reconnecter vers
-     * d'autres générateurs si cela diminue le coût total du réseau.
-     *
-     * @param net  réseau à modifier
-     * @param calc calculateur de coût
-     * @return true si au moins une amélioration a été trouvée, false sinon
+     * Exécute l'optimisation hybride.
      */
     public boolean improve(Network net, CostCalculator calc) {
-        boolean improvedAtLeastOnce = false;
-
         if (net.houses().isEmpty() || net.generators().isEmpty()) {
             return false;
         }
 
-        CostCalculator.Cost currentCost = calc.compute(net);
+        // --- ÉTAPE 1 : Initialisation Intelligente (Smart Initialization) ---
+        // On sauvegarde l'état actuel au cas où notre heuristique serait pire (peu
+        // probable mais prudent)
+        Map<String, String> originalAssignment = new HashMap<>(net.assignment());
+        double originalCost = calc.compute(net).total();
 
-        for (int iter = 0; iter < maxIterations; iter++) {
-            boolean improvedThisIteration = false;
+        // On applique l'algorithme "Best-Fit Decreasing" pour partir d'une base saine
+        runBestFitDecreasing(net);
 
-            // Parcours de toutes les maisons
-            for (House house : net.houses().values()) {
-                String houseId = house.getId();
-                String currentGen = net.assignment().get(houseId);
+        // On évalue ce point de départ "intelligent"
+        CostCalculator.Cost smartStartCostObj = calc.compute(net);
+        double currentCost = smartStartCostObj.total();
 
-                // On essaie de connecter la maison à chaque générateur possible
-                String bestGen = currentGen;
-                CostCalculator.Cost bestCost = currentCost;
-
-                for (String candidateGen : net.generators().keySet()) {
-                    // Si déjà connecté à ce générateur, on ne teste pas
-                    if (candidateGen.equals(currentGen)) {
-                        continue;
-                    }
-
-                    // On sauvegarde l'affectation actuelle
-                    String previousGen = currentGen;
-
-                    // On applique une affectation temporaire
-                    if (candidateGen != null) {
-                        net.connect(houseId, candidateGen);
-                    }
-
-                    // On calcule le nouveau coût
-                    CostCalculator.Cost candidateCost = calc.compute(net);
-
-                    // Si mieux, on garde cette affectation comme meilleure candidate
-                    if (candidateCost.total() < bestCost.total()) {
-                        bestCost = candidateCost;
-                        bestGen = candidateGen;
-                    }
-
-                    // On restaure l'affectation d'origine
-                    if (previousGen != null) {
-                        net.connect(houseId, previousGen);
-                    }
-                }
-
-                // Si on a trouvé un meilleur générateur pour cette maison, on applique le changement
-                if (bestGen != null && !bestGen.equals(currentGen)) {
-                    net.connect(houseId, bestGen);
-                    currentCost = bestCost;
-                    improvedThisIteration = true;
-                    improvedAtLeastOnce = true;
-                }
-            }
-
-            // Si aucune amélioration pendant cette itération, on s'arrête
-            if (!improvedThisIteration) {
-                break;
-            }
+        // Si par miracle l'état original était mieux que le Smart Start, on revient en
+        // arrière
+        if (originalCost < currentCost) {
+            applyAssignment(net, originalAssignment);
+            currentCost = originalCost;
         }
 
-        return improvedAtLeastOnce;
+        // --- ÉTAPE 2 : Recuit Simulé (Simulated Annealing) ---
+        // Maintenant qu'on est bien placés, on affine avec la métaheuristique
+
+        Map<String, String> bestAssignment = new HashMap<>(net.assignment());
+        double bestCost = currentCost;
+
+        List<String> houseIds = new ArrayList<>(net.houses().keySet());
+        List<String> genIds = new ArrayList<>(net.generators().keySet());
+        Random rand = new Random();
+
+        double temperature = initialTemperature;
+
+        for (int i = 0; i < maxIterations; i++) {
+
+            // Stratégie de mouvement : 50% Swap (échange), 50% Move (déplacement simple)
+            boolean isSwap = rand.nextBoolean() && houseIds.size() > 1;
+
+            String houseA = houseIds.get(rand.nextInt(houseIds.size()));
+            String oldGenA = net.assignment().get(houseA);
+
+            String houseB = null;
+            String oldGenB = null;
+
+            if (isSwap) {
+                // ECHANGE : On échange deux maisons entre deux générateurs
+                houseB = houseIds.get(rand.nextInt(houseIds.size()));
+                oldGenB = net.assignment().get(houseB);
+
+                if (oldGenA.equals(oldGenB))
+                    continue; // Inutile si même générateur
+
+                // On applique l'échange
+                net.connect(houseA, oldGenB);
+                net.connect(houseB, oldGenA);
+            } else {
+                // DEPLACEMENT : On déplace une maison vers un autre générateur
+                String newGen = genIds.get(rand.nextInt(genIds.size()));
+
+                if (newGen.equals(oldGenA))
+                    continue; // Inutile
+
+                // On applique le déplacement
+                net.connect(houseA, newGen);
+            }
+
+            // Calcul du delta (gain ou perte)
+            CostCalculator.Cost newCostObj = calc.compute(net);
+            double newCost = newCostObj.total();
+            double delta = newCost - currentCost;
+
+            // Critère de Metropolis : On accepte si c'est mieux OU si la température le
+            // permet
+            if (delta < 0 || Math.exp(-delta / temperature) > rand.nextDouble()) {
+                currentCost = newCost;
+
+                // Mise à jour du record absolu
+                if (currentCost < bestCost) {
+                    bestCost = currentCost;
+                    bestAssignment = new HashMap<>(net.assignment());
+                }
+            } else {
+                // Annulation du mouvement (Rollback)
+                net.connect(houseA, oldGenA);
+                if (isSwap) {
+                    net.connect(houseB, oldGenB);
+                }
+            }
+
+            // Refroidissement
+            temperature *= coolingRate;
+        }
+
+        // Application finale de la meilleure solution trouvée
+        applyAssignment(net, bestAssignment);
+
+        // Retourne true si on a réussi à battre le score original
+        return bestCost < originalCost;
+    }
+
+    /**
+     * Heuristique gloutonne : "Best-Fit Decreasing".
+     * Trie les maisons par consommation décroissante et les place sur le générateur
+     * ayant le plus de capacité restante (ou le taux d'utilisation le plus bas).
+     */
+    private void runBestFitDecreasing(Network net) {
+        // 1. Récupérer toutes les maisons et les trier (plus grosse -> plus petite)
+        List<House> sortedHouses = new ArrayList<>(net.houses().values());
+        // Tri décroissant sur la demande (40kW avant 10kW)
+        sortedHouses.sort((h1, h2) -> Integer.compare(h2.demandKw(), h1.demandKw()));
+
+        // 2. Réinitialiser les connexions (virtuellement, on va tout réassigner)
+        // On a besoin de suivre la charge actuelle de chaque générateur pendant la
+        // construction
+        Map<String, Integer> currentLoad = new HashMap<>();
+        for (String genId : net.generators().keySet()) {
+            currentLoad.put(genId, 0);
+        }
+
+        // 3. Placement glouton
+        for (House house : sortedHouses) {
+            String bestGenId = null;
+            double bestScore = Double.MAX_VALUE;
+
+            // On cherche le générateur qui "souffrira le moins" d'accueillir cette maison
+            for (Generator gen : net.generators().values()) {
+                String genId = gen.getId();
+                double capacity = gen.getCapacityKw();
+                double load = currentLoad.get(genId);
+
+                // Simulation : quel serait le taux d'utilisation si on ajoutait cette maison ?
+                double newLoad = load + house.demandKw();
+                double ratio = newLoad / capacity;
+
+                // Critère : On veut le ratio le plus bas possible (pour équilibrer et éviter
+                // surcharge)
+                if (ratio < bestScore) {
+                    bestScore = ratio;
+                    bestGenId = genId;
+                }
+            }
+
+            // Affectation
+            if (bestGenId != null) {
+                net.connect(house.getId(), bestGenId);
+                currentLoad.put(bestGenId, currentLoad.get(bestGenId) + house.demandKw());
+            }
+        }
+    }
+
+    private void applyAssignment(Network net, Map<String, String> assignment) {
+        for (Map.Entry<String, String> entry : assignment.entrySet()) {
+            net.connect(entry.getKey(), entry.getValue());
+        }
     }
 }
