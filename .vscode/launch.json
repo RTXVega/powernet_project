@@ -3,6 +3,13 @@
   "configurations": [
     {
         "type": "java",
+        "name": "PowerNetApp",
+        "request": "launch",
+        "mainClass": "powernet.fx.PowerNetApp",
+        "projectName": "powernet"
+    },
+    {
+        "type": "java",
         "name": "App",
         "request": "launch",
         "mainClass": "powernet.cli.App",
