@@ -1,10 +1,11 @@
-Réseau de distribution d'électricité. Partie 1.
-Fait par: (TP du jeudi 13h30-16h30)
-    Almas KASSYMBEKOV
-    Anis BOUHAIL
-    Rui MA
+# Réseau de distribution d'électricité. Partie 1.
 
-Structure du projet
+**Fait par (TP du jeudi 13h30-16h30)**  
+Almas KASSYMBEKOV  
+Anis BOUHAIL  
+Rui MA
+
+## Structure du projet
 
 - powernet.model  
   - Consumption : niveaux de consommation (BASSE, NORMAL, FORTE)  
@@ -17,27 +18,32 @@ Structure du projet
   - CostCalculator : calcul de la dispersion, de la surcharge et du coût total  
   - NetworkPrinter : affichage texte du réseau et des coûts
 
-- powernet.cli 
+- powernet.cli  
   - ConsoleMenu : interface textuelle (menus, saisies utilisateur)  
   - App : point d’entrée de l’application
 
 ---
 
-Utilisation
+## Utilisation
 
-Depuis un IDE:
+### Depuis la ligne de commande
 
-1. Importer le projet comme projet Java.
-2. Lancer la classe :
-   - powernet.cli.App
+Se placer à la racine du projet :
 
-Depuis la ligne de commande:
+- pour la version de ligne de commande :
 
-Se placer à la racine du projet:
-
-javac $(find src/main/java -name "*.java")
-java -cp src/main/java powernet.cli.App --lambda 10
-
+```bash
+mvn -DskipTests exec:java -Dexec.mainClass=powernet.cli.App
 ```
+
+- pour la version graphique :
+
+```bash
 mvn clean javafx:run
 ```
+
+### Depuis un IDE
+
+1. Importer le projet comme projet Java.  
+2. Lancer la classe :  
+   - powernet.cli.App
