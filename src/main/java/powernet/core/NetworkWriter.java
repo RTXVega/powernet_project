@@ -1,13 +1,12 @@
 package powernet.core;
 
-import powernet.model.Generator;
-import powernet.model.House;
-import powernet.model.Consumption;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import powernet.model.Generator;
+import powernet.model.House;
 
 /**
  * Sauvegarde d'un réseau dans un fichier texte au format Partie 2 :

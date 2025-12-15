@@ -1,9 +1,8 @@
 package powernet.fx.view;
 
 import javafx.geometry.Insets;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import powernet.fx.controller.DashboardController;
 
 public class MainView extends BorderPane {

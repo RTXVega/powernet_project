@@ -1,12 +1,12 @@
 package powernet.fx.controller;
 
+import java.io.File;
+
 import powernet.core.AutoSolver;
 import powernet.core.CostCalculator;
 import powernet.core.Network;
 import powernet.core.NetworkParser;
 import powernet.fx.view.NetworkCanvas;
-import java.io.File;
-import java.nio.file.Path;
 
 public class DashboardController {
 

@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("Network Core Tests")
+@DisplayName("Tests du cœur du réseau")
 class NetworkTest {
 
     private Network network;
@@ -24,7 +24,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should create empty network")
+    @DisplayName("Doit créer un réseau vide")
     void testCreateEmptyNetwork() {
         assertThat(network.houses()).isEmpty();
         assertThat(network.generators()).isEmpty();
@@ -32,7 +32,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should add single house")
+    @DisplayName("Doit ajouter une maison")
     void testAddSingleHouse() {
         House house = new House("M1", Consumption.NORMAL);
         network.addHouse(house);
@@ -43,7 +43,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should add multiple houses")
+    @DisplayName("Doit ajouter plusieurs maisons")
     void testAddMultipleHouses() {
         network.addHouse(new House("M1", Consumption.BASSE));
         network.addHouse(new House("M2", Consumption.NORMAL));
@@ -54,7 +54,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should throw exception for duplicate house id")
+    @DisplayName("Doit lever une exception pour un identifiant de maison en double")
     void testAddDuplicateHouse() {
         network.addHouse(new House("M1", Consumption.NORMAL));
 
@@ -64,7 +64,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should add single generator")
+    @DisplayName("Doit ajouter un générateur")
     void testAddSingleGenerator() {
         Generator generator = new Generator("G1", 100);
         network.addGenerator(generator);
@@ -75,7 +75,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should add multiple generators")
+    @DisplayName("Doit ajouter plusieurs générateurs")
     void testAddMultipleGenerators() {
         network.addGenerator(new Generator("G1", 100));
         network.addGenerator(new Generator("G2", 200));
@@ -86,7 +86,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should throw exception for duplicate generator id")
+    @DisplayName("Doit lever une exception pour un identifiant de générateur en double")
     void testAddDuplicateGenerator() {
         network.addGenerator(new Generator("G1", 100));
 
@@ -96,7 +96,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should connect house to generator")
+    @DisplayName("Doit connecter une maison à un générateur")
     void testConnect() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -107,7 +107,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should reconnect house to different generator")
+    @DisplayName("Doit reconnecter une maison à un autre générateur")
     void testReconnect() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -121,7 +121,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when connecting unknown house")
+    @DisplayName("Doit lever une exception lors de la connexion d'une maison inconnue")
     void testConnectUnknownHouse() {
         network.addGenerator(new Generator("G1", 100));
 
@@ -131,7 +131,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when connecting to unknown generator")
+    @DisplayName("Doit lever une exception lors de la connexion à un générateur inconnu")
     void testConnectToUnknownGenerator() {
         network.addHouse(new House("M1", Consumption.NORMAL));
 
@@ -141,7 +141,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should remove connection")
+    @DisplayName("Doit supprimer une connexion")
     void testRemoveConnection() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -153,7 +153,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when removing non-existent connection")
+    @DisplayName("Doit lever une exception lors de la suppression d'une connexion inexistante")
     void testRemoveNonExistentConnection() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -164,7 +164,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when removing mismatched connection")
+    @DisplayName("Doit lever une exception lors de la suppression d'une connexion incohérente")
     void testRemoveMismatchedConnection() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -177,7 +177,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should compute loads for single house")
+    @DisplayName("Doit calculer la charge pour une seule maison")
     void testComputeLoadsSingleHouse() {
         network.addHouse(new House("M1", Consumption.NORMAL)); // 20 kW
         network.addGenerator(new Generator("G1", 100));
@@ -190,7 +190,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should compute loads for multiple houses on same generator")
+    @DisplayName("Doit calculer la charge de plusieurs maisons sur le même générateur")
     void testComputeLoadsMultipleHouses() {
         network.addHouse(new House("M1", Consumption.BASSE));    // 10 kW
         network.addHouse(new House("M2", Consumption.NORMAL));   // 20 kW
@@ -207,7 +207,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should compute loads for multiple generators")
+    @DisplayName("Doit calculer les charges pour plusieurs générateurs")
     void testComputeLoadsMultipleGenerators() {
         network.addHouse(new House("M1", Consumption.NORMAL));   // 20 kW
         network.addHouse(new House("M2", Consumption.FORTE));    // 40 kW
@@ -225,22 +225,22 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should return zero loads for disconnected houses")
+    @DisplayName("Doit retourner 0 de charge pour les maisons déconnectées")
     void testComputeLoadsDisconnected() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addHouse(new House("M2", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
 
         network.connect("M1", "G1");
-        // M2 is not connected
+        // M2 n'est pas connectée
 
         Map<String, Integer> loads = network.computeLoadsKw();
 
-        assertThat(loads.get("G1")).isEqualTo(20); // Only M1's load
+        assertThat(loads.get("G1")).isEqualTo(20); // Charge uniquement de M1
     }
 
     @Test
-    @DisplayName("Should return zero load for generator with no houses")
+    @DisplayName("Doit retourner une charge nulle pour un générateur sans maison")
     void testComputeLoadsEmptyGenerator() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -255,14 +255,14 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should return empty loads for empty network")
+    @DisplayName("Doit retourner des charges vides pour un réseau vide")
     void testComputeLoadsEmptyNetwork() {
         Map<String, Integer> loads = network.computeLoadsKw();
         assertThat(loads).isEmpty();
     }
 
     @Test
-    @DisplayName("Should return unmodifiable view of houses")
+    @DisplayName("Doit renvoyer une vue non modifiable des maisons")
     void testHousesUnmodifiable() {
         network.addHouse(new House("M1", Consumption.NORMAL));
 
@@ -271,7 +271,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should return unmodifiable view of generators")
+    @DisplayName("Doit renvoyer une vue non modifiable des générateurs")
     void testGeneratorsUnmodifiable() {
         network.addGenerator(new Generator("G1", 100));
 
@@ -280,7 +280,7 @@ class NetworkTest {
     }
 
     @Test
-    @DisplayName("Should return unmodifiable view of assignment")
+    @DisplayName("Doit renvoyer une vue non modifiable des affectations")
     void testAssignmentUnmodifiable() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));

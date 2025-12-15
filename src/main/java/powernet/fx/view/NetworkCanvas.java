@@ -1,21 +1,19 @@
 package powernet.fx.view;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.control.Tooltip;
 import powernet.core.Network;
 import powernet.model.Generator;
 import powernet.model.House;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 public class NetworkCanvas extends Pane {
 
@@ -160,15 +158,9 @@ public class NetworkCanvas extends Pane {
 
             // Color based on consumption
             switch (h.getLevel()) {
-                case BASSE:
-                    circle.setFill(Color.LIGHTGREEN);
-                    break;
-                case NORMAL:
-                    circle.setFill(Color.LIGHTBLUE);
-                    break;
-                case FORTE:
-                    circle.setFill(Color.ORANGE);
-                    break;
+                case BASSE -> circle.setFill(Color.LIGHTGREEN);
+                case NORMAL -> circle.setFill(Color.LIGHTBLUE);
+                case FORTE -> circle.setFill(Color.ORANGE);
             }
             circle.setStroke(Color.DARKSLATEGRAY);
 

@@ -24,7 +24,7 @@ class NetworkPrinterTest {
         CostCalculator.Cost cost = calc.compute(net);
 
         String summary = NetworkPrinter.printSummary(net, cost).replace("\r\n", "\n");
-        // Normalise decimal separator for locales using commas.
+        // Normalise le séparateur décimal pour les locales qui utilisent la virgule.
         String normalized = summary.replace(',', '.');
 
         assertTrue(normalized.contains("GENERATEURS"));
