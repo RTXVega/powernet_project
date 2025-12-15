@@ -23,8 +23,19 @@ Rui MA
   - App : point d’entrée de l’application
 
 ---
+## Tests unitaires
+### Depuis la ligne de commande
 
+Se placer à la racine du projet :
+
+- pour la version de ligne de commande :
+
+```bash
+mvn test
+```
+---
 ## Utilisation
+
 
 ### Depuis la ligne de commande
 
@@ -39,7 +50,7 @@ mvn -DskipTests exec:java -Dexec.mainClass=powernet.cli.App
 - pour la version graphique :
 
 ```bash
-mvn clean javafx:run
+mvn javafx:run
 ```
 
 ### Depuis un IDE

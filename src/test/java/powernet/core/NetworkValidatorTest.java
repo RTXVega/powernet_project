@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("NetworkValidator Tests")
+@DisplayName("Tests du validateur de réseau")
 class NetworkValidatorTest {
 
     private Network network;
@@ -22,7 +22,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should return empty list for valid network")
+    @DisplayName("Doit renvoyer une liste vide pour un réseau valide")
     void testValidNetworkNoIssues() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -34,7 +34,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should detect no houses")
+    @DisplayName("Doit détecter l'absence de maisons")
     void testNoHouses() {
         network.addGenerator(new Generator("G1", 100));
 
@@ -44,7 +44,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should detect no generators")
+    @DisplayName("Doit détecter l'absence de générateurs")
     void testNoGenerators() {
         network.addHouse(new House("M1", Consumption.NORMAL));
 
@@ -54,7 +54,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should detect empty network")
+    @DisplayName("Doit détecter un réseau vide")
     void testEmptyNetwork() {
         List<String> issues = NetworkValidator.validate(network);
 
@@ -63,7 +63,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should detect single disconnected house")
+    @DisplayName("Doit détecter une maison non connectée")
     void testSingleDisconnectedHouse() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addGenerator(new Generator("G1", 100));
@@ -74,7 +74,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should detect multiple disconnected houses")
+    @DisplayName("Doit détecter plusieurs maisons non connectées")
     void testMultipleDisconnectedHouses() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addHouse(new House("M2", Consumption.BASSE));
@@ -92,7 +92,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should not report issues when all houses are connected")
+    @DisplayName("Ne doit pas signaler de problèmes quand toutes les maisons sont connectées")
     void testAllHousesConnected() {
         network.addHouse(new House("M1", Consumption.NORMAL));
         network.addHouse(new House("M2", Consumption.BASSE));
@@ -108,9 +108,9 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should report combined issues")
+    @DisplayName("Doit signaler les problèmes combinés")
     void testCombinedIssues() {
-        // No generators and disconnected house
+        // Aucun générateur et maison déconnectée
         network.addHouse(new House("M1", Consumption.NORMAL));
 
         List<String> issues = NetworkValidator.validate(network);
@@ -121,9 +121,9 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should return list in consistent order")
+    @DisplayName("Doit retourner une liste dans un ordre cohérent")
     void testIssuesOrder() {
-        // Call validate twice on same network
+        // Appeler validate deux fois sur le même réseau
         network.addHouse(new House("M1", Consumption.NORMAL));
 
         List<String> issues1 = NetworkValidator.validate(network);
@@ -133,26 +133,26 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should validate large network correctly")
+    @DisplayName("Doit valider correctement un grand réseau")
     void testLargeNetwork() {
-        // Add 100 houses
+        // Ajouter 100 maisons
         for (int i = 1; i <= 100; i++) {
             network.addHouse(new House("M" + i, Consumption.NORMAL));
         }
 
-        // Add only 50 generators
+        // Ajouter seulement 50 générateurs
         for (int i = 1; i <= 50; i++) {
             network.addGenerator(new Generator("G" + i, 100));
         }
 
-        // Connect only first 50 houses
+        // Connecter uniquement les 50 premières maisons
         for (int i = 1; i <= 50; i++) {
             network.connect("M" + i, "G" + i);
         }
 
         List<String> issues = NetworkValidator.validate(network);
 
-        // Should report 50 disconnected houses
+        // Doit signaler 50 maisons déconnectées
         for (int i = 51; i <= 100; i++) {
             assertThat(issues).contains("Maison non connectée: M" + i);
         }
@@ -160,7 +160,7 @@ class NetworkValidatorTest {
     }
 
     @Test
-    @DisplayName("Should handle houses with special characters in id")
+    @DisplayName("Doit gérer les maisons avec caractères spéciaux dans l'identifiant")
     void testSpecialCharacterIds() {
         network.addHouse(new House("M-1_2", Consumption.NORMAL));
         network.addGenerator(new Generator("G-1_2", 100));
