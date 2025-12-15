@@ -50,7 +50,7 @@ class NetworkParserTest {
         NetworkParser parser = new NetworkParser();
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> parser.parse(file));
-        // message should point to the offending line and mention invalid connection
+        // le message doit pointer la ligne fautive et mentionner la connexion invalide
         org.junit.jupiter.api.Assertions.assertTrue(
                 ex.getMessage().contains("Ligne 3"),
                 "Expected line number in message");
