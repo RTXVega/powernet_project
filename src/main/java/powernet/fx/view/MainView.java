@@ -3,6 +3,8 @@ package powernet.fx.view;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import powernet.fx.controller.DashboardController;
 
 public class MainView extends BorderPane {
@@ -20,9 +22,18 @@ public class MainView extends BorderPane {
         setRight(controlPanel);
 
         // Header
-        Label title = new Label("PowerNet V2 Dashboard");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10;");
-        setTop(title);
+        Label title = new Label("Réseau de distribution d’électricité");
+        title.setFont(Font.font("System", FontWeight.BOLD, 18));
+        title.setPadding(new Insets(10, 0, 10, 0));
+
+        Label authors = new Label("Almas Kassymbekov · Anis Bouhail · Rui Ma");
+        authors.setFont(Font.font("System", FontWeight.NORMAL, 12));
+        authors.setStyle("-fx-text-fill: #555;");
+
+        javafx.scene.layout.HBox header = new javafx.scene.layout.HBox(16, title, authors);
+        header.setPadding(new Insets(10));
+        header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        setTop(header);
 
         // Legend (Bottom)
         setBottom(createLegendPanel());

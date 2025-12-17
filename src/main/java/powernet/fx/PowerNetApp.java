@@ -12,7 +12,7 @@ public class PowerNetApp extends Application {
         MainView mainView = new MainView();
         Scene scene = new Scene(mainView, 1000, 700);
 
-        primaryStage.setTitle("PowerNet V2 - Network Optimizer");
+        primaryStage.setTitle("Réseau de distribution d’électricité - Outil de l'optimisation de réseau");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
