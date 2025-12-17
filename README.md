@@ -21,8 +21,7 @@ powernet_project/
 │  │  ├─ NetworkPrinter.java    # affichage texte du réseau et des coûts
 │  │  ├─ NetworkWriter.java     # sauvegarde du réseau au format texte
 │  │  ├─ NetworkParser.java     # parsing des fichiers réseau
-│  │  ├─ AutoSolver.java        # heuristique hybride (BFD + recuit)
-│  │  └─ SolverTest.java        # utilitaire de test manuel
+│  │  └─AutoSolver.java        # heuristique hybride (BFD + recuit)
 │  ├─ cli/
 │  │  ├─ ConsoleMenu.java   # interface textuelle (menus, saisies utilisateur)
 │  │  ├─ ConsoleMenuV2.java # interface textuelle alternative
