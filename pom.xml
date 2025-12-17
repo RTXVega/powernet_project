@@ -110,6 +110,21 @@
                 </executions>
             </plugin>
 
+            <!-- Add Main-Class to manifest for CLI jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <mainClass>powernet.cli.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
             <!-- JavaFX Run Plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>

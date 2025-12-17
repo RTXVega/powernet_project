@@ -1,17 +1,16 @@
 package powernet.core;
 
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+
 import powernet.model.Consumption;
 import powernet.model.Generator;
 import powernet.model.House;
-
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Tests du cœur du réseau")
 class NetworkTest {

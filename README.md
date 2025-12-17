@@ -34,13 +34,15 @@ powernet_project/
 └─ src/test/java/powernet/ # tests unitaires
 ```
 
-## Exécution
-- Ligne de commande (CLI) : `mvn -DskipTests exec:java -Dexec.mainClass=powernet.cli.App`
-- Interface graphique (JavaFX) : `mvn javafx:run`
+## Prérequis
+- Maven installé et disponible via `mvn` (3.8+ recommandé)  
+- macOS (Homebrew) : `brew install maven`  
+- Linux (apt) : `sudo apt-get update && sudo apt-get install maven`
 
-## Tests
+## Build/Run via Maven (sans jar manuel)
+- CLI (recommandé) : `mvn -DskipTests clean compile exec:java -Dexec.mainClass=powernet.cli.App`
+- JavaFX GUI : `mvn -DskipTests clean compile javafx:run`
+- Build complet si besoin : `mvn -DskipTests clean package` (jar dans `target/`, mais l’usage principal reste via Maven)
+
+## Tests unitaires
 - À la racine du projet : `mvn test` (JaCoCo génère ensuite `target/site/jacoco/index.html`)
-
-## IDE
-1) Importer le projet Maven/Java.  
-2) Lancer la classe `powernet.cli.App` ou `powernet.fx.PowerNetApp`.
