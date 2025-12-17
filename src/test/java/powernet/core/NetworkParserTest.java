@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Tests du parseur de réseau")
 class NetworkParserTest {
 
     @Test
+    @DisplayName("Doit construire le réseau depuis un fichier valide")
     void parse_validFile_buildsNetwork() throws IOException {
         String content = String.join("\n",
                 "generateur(G1,50).",
@@ -37,6 +40,7 @@ class NetworkParserTest {
     }
 
     @Test
+    @DisplayName("Signale la ligne lorsqu'une connexion est invalide")
     void parse_invalidConnection_throwsWithLineNumber() throws IOException {
         String content = String.join("\n",
                 "generateur(G1,50).",

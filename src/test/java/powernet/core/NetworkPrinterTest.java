@@ -2,15 +2,18 @@ package powernet.core;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import powernet.model.Consumption;
 import powernet.model.Generator;
 import powernet.model.House;
 
+@DisplayName("Tests de l'impression de réseau")
 class NetworkPrinterTest {
 
     @Test
+    @DisplayName("Formate les générateurs, maisons et coûts dans le résumé")
     void printSummary_formatsGeneratorsHousesAndCosts() {
         Network net = new Network();
         net.addGenerator(new Generator("G1", 100));

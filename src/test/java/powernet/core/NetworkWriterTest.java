@@ -6,15 +6,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import powernet.model.Consumption;
 import powernet.model.Generator;
 import powernet.model.House;
 
+@DisplayName("Tests de la sauvegarde de réseau")
 class NetworkWriterTest {
 
     @Test
+    @DisplayName("Écrit le format attendu dans le fichier de sortie")
     void save_writesExpectedFormat() throws IOException {
         Network net = new Network();
         net.addGenerator(new Generator("G1", 60));

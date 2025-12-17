@@ -23,7 +23,7 @@ class CostCalculatorTest {
     }
 
     @Test
-    @DisplayName("Retourner 0 pour un réseau vide")
+    @DisplayName("Doit retourner 0 pour un réseau vide")
     void testEmptyNetworkCost() {
         CostCalculator.Cost cost = calculator.compute(network);
 
@@ -33,7 +33,7 @@ class CostCalculatorTest {
     }
 
     @Test
-    @DisplayName("Calculer le coût pour 1 maison et 1 générateur")
+    @DisplayName("Doit calculer le coût pour 1 maison et 1 générateur")
     void testSingleHouseAndGenerator() {
         network.addHouse(new House("M1", Consumption.NORMAL)); // 20 kW
         network.addGenerator(new Generator("G1", 100)); // capacité 100 kW
