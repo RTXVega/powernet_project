@@ -21,7 +21,7 @@ public class MainView extends BorderPane {
         setCenter(networkCanvas);
         setRight(controlPanel);
 
-        // Header
+        // En-tête
         Label title = new Label("Réseau de distribution d’électricité");
         title.setFont(Font.font("System", FontWeight.BOLD, 18));
         title.setPadding(new Insets(10, 0, 10, 0));
@@ -35,7 +35,7 @@ public class MainView extends BorderPane {
         header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         setTop(header);
 
-        // Legend (Bottom)
+        // Légende (Bas)
         setBottom(createLegendPanel());
     }
 

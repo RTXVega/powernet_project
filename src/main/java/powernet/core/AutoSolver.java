@@ -29,9 +29,10 @@ public class AutoSolver {
             return false;
         }
 
-        // --- ÉTAPE 1 : Initialisation Intelligente (Smart Initialization) ---
-        // On sauvegarde l'état actuel au cas où notre heuristique serait pire (peu
-        // probable mais prudent)
+        // --- ÉTAPE 1 : Initialisation Intelligente ---
+        // On sauvegarde l'état actuel au cas où notre heuristique serait moins
+        // performante
+        // (peu probable mais prudent).
         Map<String, String> originalAssignment = new HashMap<>(net.assignment());
         double originalCost = calc.compute(net).total();
 
@@ -42,15 +43,15 @@ public class AutoSolver {
         CostCalculator.Cost smartStartCostObj = calc.compute(net);
         double currentCost = smartStartCostObj.total();
 
-        // Si par miracle l'état original était mieux que le Smart Start, on revient en
+        // Si l'état original était meilleur que le démarrage intelligent, on revient en
         // arrière
         if (originalCost < currentCost) {
             applyAssignment(net, originalAssignment);
             currentCost = originalCost;
         }
 
-        // --- ÉTAPE 2 : Recuit Simulé (Simulated Annealing) ---
-        // Maintenant qu'on est bien placés, on affine avec la métaheuristique
+        // --- ÉTAPE 2 : Recuit Simulé ---
+        // Maintenant que le point de départ est bon, on affine avec la métaheuristique.
 
         Map<String, String> bestAssignment = new HashMap<>(net.assignment());
         double bestCost = currentCost;
@@ -63,7 +64,7 @@ public class AutoSolver {
 
         for (int i = 0; i < maxIterations; i++) {
 
-            // Stratégie de mouvement : 50% Swap (échange), 50% Move (déplacement simple)
+            // Stratégie de mouvement : 50% Échange (Swap), 50% Déplacement (Move)
             boolean isSwap = rand.nextBoolean() && houseIds.size() > 1;
 
             String houseA = houseIds.get(rand.nextInt(houseIds.size()));
@@ -73,7 +74,7 @@ public class AutoSolver {
             String oldGenB = null;
 
             if (isSwap) {
-                // ECHANGE : On échange deux maisons entre deux générateurs
+                // ÉCHANGE : On échange deux maisons entre deux générateurs
                 houseB = houseIds.get(rand.nextInt(houseIds.size()));
                 oldGenB = net.assignment().get(houseB);
 
@@ -84,7 +85,7 @@ public class AutoSolver {
                 net.connect(houseA, oldGenB);
                 net.connect(houseB, oldGenA);
             } else {
-                // DEPLACEMENT : On déplace une maison vers un autre générateur
+                // DÉPLACEMENT : On déplace une maison vers un autre générateur
                 String newGen = genIds.get(rand.nextInt(genIds.size()));
 
                 if (newGen.equals(oldGenA))
@@ -104,7 +105,7 @@ public class AutoSolver {
             if (delta < 0 || Math.exp(-delta / temperature) > rand.nextDouble()) {
                 currentCost = newCost;
 
-                // Mise à jour du record absolu
+                // Mise à jour du meilleur score absolu
                 if (currentCost < bestCost) {
                     bestCost = currentCost;
                     bestAssignment = new HashMap<>(net.assignment());
@@ -139,7 +140,7 @@ public class AutoSolver {
         // Tri décroissant sur la demande (40kW avant 10kW)
         sortedHouses.sort((h1, h2) -> Integer.compare(h2.demandKw(), h1.demandKw()));
 
-        // 2. Réinitialiser les connexions (virtuellement, on va tout réassigner)
+        // 2. Réinitialiser les connexions (virtuellement, car on va tout réassigner)
         // On a besoin de suivre la charge actuelle de chaque générateur pendant la
         // construction
         Map<String, Integer> currentLoad = new HashMap<>();

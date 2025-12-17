@@ -17,7 +17,7 @@ public class DashboardController {
 
     public DashboardController(NetworkCanvas canvas) {
         this.canvas = canvas;
-        this.currentNetwork = new Network(); // Start empty
+        this.currentNetwork = new Network(); // Commence avec un réseau vide
     }
 
     public void loadNetwork(File file) {
@@ -26,7 +26,7 @@ public class DashboardController {
             this.currentNetwork = parser.parse(file.toPath());
             updateCanvas();
         } catch (Exception e) {
-            e.printStackTrace(); // TODO: Show Alert
+            e.printStackTrace(); // TODO: Afficher une alerte en cas d'erreur
         }
     }
 
@@ -48,7 +48,7 @@ public class DashboardController {
         if (currentNetwork == null)
             return;
 
-        // On met beaucoup d'itérations car c'est très rapide
+        // On utilise un grand nombre d'itérations car l'exécution est très rapide
         AutoSolver solver = new AutoSolver(50000);
         CostCalculator calculator = new CostCalculator(lambda);
 

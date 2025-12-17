@@ -29,20 +29,20 @@ public class ControlPanel extends VBox {
         setSpacing(15);
         setStyle("-fx-background-color: #ecf0f1; -fx-pref-width: 250;");
 
-        // Title
+        // Titre
         Label title = new Label("Contrôles");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         getChildren().add(title);
 
         getChildren().add(new Separator());
 
-        // Load Button
+        // Bouton Charger
         Button btnLoad = new Button("Charger un fichier réseau");
         btnLoad.setMaxWidth(Double.MAX_VALUE);
         btnLoad.setOnAction(e -> loadFile());
         getChildren().add(btnLoad);
 
-        // Save Button
+        // Bouton Sauvegarder
         Button btnSave = new Button("Sauvegarder le réseau");
         btnSave.setMaxWidth(Double.MAX_VALUE);
         btnSave.setOnAction(e -> saveFile());
@@ -50,7 +50,7 @@ public class ControlPanel extends VBox {
 
         getChildren().add(new Separator());
 
-        // Optimization
+        // Optimisation
         Label lblOpt = new Label("Optimisation");
         lblOpt.setStyle("-fx-font-weight: bold");
 
@@ -66,7 +66,7 @@ public class ControlPanel extends VBox {
 
         getChildren().add(new Separator());
 
-        // Parameters
+        // Paramètres
         Label lblParams = new Label("Paramètres");
         lblParams.setStyle("-fx-font-weight: bold");
 
@@ -78,7 +78,7 @@ public class ControlPanel extends VBox {
 
         getChildren().add(new Separator());
 
-        // Stats
+        // Statistiques
         Label lblStats = new Label("Statistiques");
         lblStats.setStyle("-fx-font-weight: bold");
 
@@ -92,7 +92,7 @@ public class ControlPanel extends VBox {
     private void loadFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Charger un fichier réseau");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Texte", "*.txt"));
         File file = fileChooser.showOpenDialog(getScene().getWindow());
         if (file != null) {
             controller.loadNetwork(file);
@@ -103,7 +103,7 @@ public class ControlPanel extends VBox {
     private void saveFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Sauvegarder le réseau");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Texte", "*.txt"));
         fileChooser.setInitialFileName("network_optimized.txt");
         File file = fileChooser.showSaveDialog(getScene().getWindow());
         if (file != null) {

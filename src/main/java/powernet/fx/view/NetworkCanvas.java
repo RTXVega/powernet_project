@@ -39,42 +39,42 @@ public class NetworkCanvas extends Pane {
         double width = getWidth();
         double height = getHeight();
         if (width == 0)
-            width = 800; // Default if not yet rendered
+            width = 800; // Valeur par défaut si non encore rendu
         if (height == 0)
             height = 600;
 
-        // Layout Generators (Top Row)
+        // Disposition des Générateurs (Ligne supérieure)
         int gCount = generators.size();
         int i = 0;
         for (Generator g : generators.values()) {
             double x = (width / (gCount + 1)) * (i + 1);
-            double y = height * 0.2; // Top 20%
+            double y = height * 0.2; // 20% du haut
             genPositions.put(g.getId(), new Point(x, y));
             i++;
         }
 
-        // Layout Houses (Bottom Area - Grid or Random)
+        // Disposition des Maisons (Zone inférieure - Grille ou Aléatoire)
         int hCount = houses.size();
-        int cols = (int) Math.ceil(Math.sqrt(hCount * 2)); // heuristic for grid
+        int cols = (int) Math.ceil(Math.sqrt(hCount * 2)); // Heuristique pour la grille
         int j = 0;
         for (House h : houses.values()) {
-            // Simple grid layout for houses
+            // Disposition simple en grille pour les maisons
             double row = (j / cols);
             double col = (j % cols);
 
-            // Center the grid at the bottom
+            // Centrer la grille en bas
             double gridWidth = width * 0.8;
             double startX = width * 0.1;
             double startY = height * 0.5;
 
             double x = startX + (col * (gridWidth / cols));
-            double y = startY + (row * 60) + (Math.random() * 20); // Add jitter
+            double y = startY + (row * 60) + (Math.random() * 20); // Ajout d'une légère variation (jitter)
 
             housePositions.put(h.getId(), new Point(x, y));
             j++;
         }
 
-        // Draw Connections first (so they are behind nodes)
+        // Dessiner les connexions en premier (pour qu'elles soient derrière les nœuds)
         for (Map.Entry<String, String> entry : assignment.entrySet()) {
             String houseId = entry.getKey();
             String genId = entry.getValue();
@@ -90,10 +90,10 @@ public class NetworkCanvas extends Pane {
             }
         }
 
-        // Compute loads
+        // Calcul des charges
         Map<String, Integer> loads = network.computeLoadsKw();
 
-        // Draw Generators
+        // Dessiner les Générateurs
         for (Generator g : generators.values()) {
             Point p = genPositions.get(g.getId());
             Rectangle rect = new Rectangle(p.x - GEN_SIZE / 2, p.y - GEN_SIZE / 2, GEN_SIZE, GEN_SIZE);
@@ -101,7 +101,7 @@ public class NetworkCanvas extends Pane {
             rect.setStroke(Color.DARKRED);
             rect.setStrokeWidth(2);
 
-            // Label (ID + Cap)
+            // Étiquette (ID + Capacité)
             Label label = new Label(g.getId() + "\n" + g.getCapacityKw() + "kW");
             label.setLayoutX(p.x - GEN_SIZE / 2);
             label.setLayoutY(p.y - GEN_SIZE / 2);
@@ -110,37 +110,37 @@ public class NetworkCanvas extends Pane {
             label.setAlignment(Pos.CENTER);
             label.setMouseTransparent(true);
 
-            Tooltip.install(rect, new Tooltip("Generator " + g.getId() + "\nCap: " + g.getCapacityKw() + "kW"));
+            Tooltip.install(rect, new Tooltip("Générateur " + g.getId() + "\nCap: " + g.getCapacityKw() + "kW"));
             getChildren().addAll(rect, label);
 
-            // --- Load Bar ---
+            // --- Barre de charge ---
             int currentLoad = loads.getOrDefault(g.getId(), 0);
             int capacity = g.getCapacityKw();
             double ratio = (double) currentLoad / capacity;
 
-            // Bar Calculation
-            double barWidth = GEN_SIZE + 20; // Slightly wider than the box
+            // Calcul de la barre
+            double barWidth = GEN_SIZE + 20; // Légèrement plus large que la boîte
             double barHeight = 6;
             double barX = p.x - barWidth / 2;
-            double barY = p.y + (GEN_SIZE / 2) + 5; // Below the box
+            double barY = p.y + (GEN_SIZE / 2) + 5; // En dessous de la boîte
 
-            // Background (Gray)
+            // Arrière-plan (Gris)
             Rectangle bgBar = new Rectangle(barX, barY, barWidth, barHeight);
             bgBar.setFill(Color.LIGHTGRAY);
             bgBar.setStroke(Color.GRAY);
             bgBar.setStrokeWidth(0.5);
 
-            // Foreground (Load)
-            double fillWidth = Math.min(ratio, 1.0) * barWidth; // Cap visual at 100%
+            // Premier plan (Charge)
+            double fillWidth = Math.min(ratio, 1.0) * barWidth; // Plafonner le visuel à 100%
             Rectangle fillBar = new Rectangle(barX, barY, fillWidth, barHeight);
 
             if (currentLoad > capacity) {
-                fillBar.setFill(Color.RED); // Overload
+                fillBar.setFill(Color.RED); // Surcharge
             } else {
                 fillBar.setFill(Color.LIMEGREEN); // OK
             }
 
-            // Text Label (e.g. "80/100")
+            // Étiquette texte (ex: "80/100")
             Label loadLbl = new Label(currentLoad + "/" + capacity);
             loadLbl.setLayoutX(barX);
             loadLbl.setLayoutY(barY + barHeight);
@@ -151,12 +151,12 @@ public class NetworkCanvas extends Pane {
             getChildren().addAll(bgBar, fillBar, loadLbl);
         }
 
-        // Draw Houses
+        // Dessiner les Maisons
         for (House h : houses.values()) {
             Point p = housePositions.get(h.getId());
             Circle circle = new Circle(p.x, p.y, NODE_RADIUS);
 
-            // Color based on consumption
+            // Couleur selon la consommation
             switch (h.getLevel()) {
                 case BASSE -> circle.setFill(Color.LIGHTGREEN);
                 case NORMAL -> circle.setFill(Color.LIGHTBLUE);
@@ -170,13 +170,13 @@ public class NetworkCanvas extends Pane {
             label.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
             label.setMouseTransparent(true);
 
-            Tooltip.install(circle, new Tooltip("House " + h.getId() + "\nLevel: " + h.getLevel()));
+            Tooltip.install(circle, new Tooltip("Maison " + h.getId() + "\nNiveau: " + h.getLevel()));
 
             getChildren().addAll(circle, label);
         }
     }
 
-    // Helper class for coordinates
+    // Classe utilitaire pour les coordonnées
     private static class Point {
         double x, y;
 
