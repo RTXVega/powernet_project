@@ -6,6 +6,7 @@ import powernet.core.AutoSolver;
 import powernet.core.CostCalculator;
 import powernet.core.Network;
 import powernet.core.NetworkParser;
+import powernet.core.NetworkWriter;
 import powernet.fx.view.NetworkCanvas;
 
 public class DashboardController {
@@ -26,6 +27,20 @@ public class DashboardController {
             updateCanvas();
         } catch (Exception e) {
             e.printStackTrace(); // TODO: Show Alert
+        }
+    }
+
+    public void saveNetwork(File file) {
+        if (currentNetwork == null)
+            return;
+        try {
+            NetworkWriter writer = new NetworkWriter();
+            writer.save(currentNetwork, file.toPath());
+            showAlert("Succès", "Réseau sauvegardé avec succès !", javafx.scene.control.Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors de la sauvegarde : " + e.getMessage(),
+                    javafx.scene.control.Alert.AlertType.ERROR);
         }
     }
 

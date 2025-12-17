@@ -42,6 +42,12 @@ public class ControlPanel extends VBox {
         btnLoad.setOnAction(e -> loadFile());
         getChildren().add(btnLoad);
 
+        // Save Button
+        Button btnSave = new Button("Sauvegarder le réseau");
+        btnSave.setMaxWidth(Double.MAX_VALUE);
+        btnSave.setOnAction(e -> saveFile());
+        getChildren().add(btnSave);
+
         getChildren().add(new Separator());
 
         // Optimization
@@ -85,14 +91,23 @@ public class ControlPanel extends VBox {
 
     private void loadFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Network File");
-        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text
-        // Files", "*.txt")); // The PDF said file is text but didn't specify extension,
-        // assuming txt or none
+        fileChooser.setTitle("Charger un fichier réseau");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File file = fileChooser.showOpenDialog(getScene().getWindow());
         if (file != null) {
             controller.loadNetwork(file);
             updateStats();
+        }
+    }
+
+    private void saveFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sauvegarder le réseau");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fileChooser.setInitialFileName("network_optimized.txt");
+        File file = fileChooser.showSaveDialog(getScene().getWindow());
+        if (file != null) {
+            controller.saveNetwork(file);
         }
     }
 
