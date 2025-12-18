@@ -26,7 +26,7 @@ class InstanceTest {
 
         new AutoSolver(1000).improve(net, calc);
         double actualCost = calc.compute(net).total();
-
+         System.out.println(actualCost);
         assertEquals(expectedCost, actualCost, EPS_04);
     }
 
@@ -42,7 +42,7 @@ class InstanceTest {
 
         new AutoSolver(1000).improve(net, calc);
         double actualCost = calc.compute(net).total();
-
+         System.out.println(actualCost);
         assertEquals(expectedCost, actualCost, EPS_04);
     }
 
@@ -58,7 +58,7 @@ class InstanceTest {
 
         new AutoSolver(1000).improve(net, calc);
         double actualCost = calc.compute(net).total();
-
+         System.out.println(actualCost);
         assertEquals(expectedCost, actualCost, EPS_04);
     }
 
@@ -74,7 +74,7 @@ class InstanceTest {
 
         new AutoSolver(1000).improve(net, calc);
         double actualCost = calc.compute(net).total();
-
+         System.out.println(actualCost);
         assertEquals(expectedCost, actualCost, EPS_04);
     }
     @Test
@@ -89,6 +89,7 @@ class InstanceTest {
 
         new AutoSolver(1000).improve(net, calc);
         double actualCost = calc.compute(net).total();
+        System.out.println(actualCost);
 
         assertEquals(expectedCost, actualCost, EPS_04);
     }
@@ -104,6 +105,7 @@ class InstanceTest {
 
         new AutoSolver(1000).improve(net, calc);
         double actualCost = calc.compute(net).total();
+        System.out.println(actualCost);
 
         assertEquals(expectedCost, actualCost, EPS_04);
     }
@@ -119,6 +121,7 @@ class InstanceTest {
 
         new AutoSolver(1000).improve(net, calc);
         double actualCost = calc.compute(net).total();
+        System.out.println(actualCost);
 
         assertEquals(expectedCost, actualCost, EPS_04);
     }
