@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.Map;
 
 import powernet.model.Consumption;
@@ -37,9 +38,9 @@ public class NetworkParser {
      * @param path chemin du fichier à lire
      * @return réseau construit à partir du fichier
      * @throws IOException en cas de problème d'accès au fichier
-     * @throws IllegalArgumentException en cas de format invalide ou de données incohérentes
+     * @throws ParseException en cas de format invalide ou de données incohérentes
      */
-    public Network parse(Path path) throws IOException {
+    public Network parse(Path path) throws IOException, ParseException {
         Network net = new Network();
         Section section = Section.NONE;
         int lineNumber = 0;
@@ -52,6 +53,7 @@ public class NetworkParser {
                 if (line.isEmpty()) {
                     continue; // on ignore les lignes vides
                 }
+                ensureAllowedCharacters(line, lineNumber);
 
                 // On exige un point final.
                 if (!line.endsWith(".")) {
@@ -110,7 +112,7 @@ public class NetworkParser {
     /**
      * Traite une ligne de type generateur(nom,capacite).
      */
-    private void parseGeneratorLine(String[] parts, Network net, int lineNumber) {
+    private void parseGeneratorLine(String[] parts, Network net, int lineNumber) throws ParseException {
         if (parts.length != 2) {
             throw parseError(lineNumber, "Format attendu: generateur(nom,capacite).");
         }
@@ -137,7 +139,7 @@ public class NetworkParser {
     /**
      * Traite une ligne de type maison(nom,NIVEAU).
      */
-    private void parseHouseLine(String[] parts, Network net, int lineNumber) {
+    private void parseHouseLine(String[] parts, Network net, int lineNumber) throws ParseException {
         if (parts.length != 2) {
             throw parseError(lineNumber, "Format attendu: maison(nom,NIVEAU).");
         }
@@ -163,7 +165,7 @@ public class NetworkParser {
      * Traite une ligne de type connexion(x,y).
      * x et y doivent désigner exactement un generateur et une maison (dans n'importe quel ordre).
      */
-    private void parseConnectionLine(String[] parts, Network net, int lineNumber) {
+    private void parseConnectionLine(String[] parts, Network net, int lineNumber) throws ParseException {
         if (parts.length != 2) {
             throw parseError(lineNumber, "Format attendu: connexion(objet1,objet2).");
         }
@@ -206,9 +208,27 @@ public class NetworkParser {
     }
 
     /**
-     * Construit une IllegalArgumentException portant le numéro de ligne.
+     * Construit une ParseException portant le numéro de ligne.
      */
-    private IllegalArgumentException parseError(int lineNumber, String message) {
-        return new IllegalArgumentException("Ligne " + lineNumber + " : " + message);
+    private ParseException parseError(int lineNumber, String message) {
+        return new ParseException("Ligne " + lineNumber + " : " + message, lineNumber);
+    }
+
+    /**
+     * Vérifie que la ligne ne contient que des caractères autorisés (alphanumériques
+     * ou signes de ponctuation utilisés pour la syntaxe du fichier).
+     */
+    private void ensureAllowedCharacters(String line, int lineNumber) throws ParseException {
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if ((c >= '0' && c <= '9')
+                    || (c >= 'A' && c <= 'Z')
+                    || (c >= 'a' && c <= 'z')
+                    || c == '(' || c == ')' || c == ',' || c == '.'
+                    || Character.isWhitespace(c)) {
+                continue;
+            }
+            throw parseError(lineNumber, "Caractere invalide dans le fichier: '" + c + "'");
+        }
     }
 }

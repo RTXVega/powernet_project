@@ -52,4 +52,4 @@ ou avec les instances chargé
 - JavaFX GUI : `mvn -DskipTests clean compile javafx:run`
 
 ## Tests unitaires
-- À la racine du projet : `mvn test` (JaCoCo génère ensuite `target/site/jacoco/index.html`)
+- À la racine du projet : `mvn clean test` (JaCoCo génère ensuite `target/site/jacoco/index.html`)

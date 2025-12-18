@@ -2,6 +2,7 @@ package powernet.cli;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.Scanner;
 import powernet.core.CostCalculator;
 import powernet.core.Network;
@@ -68,7 +69,7 @@ public class App {
 
         } catch (IOException e) {
             System.err.println("Erreur d'entree/sortie lors de la lecture du fichier : " + e.getMessage());
-        } catch (IllegalArgumentException e) {
+        } catch (ParseException e) {
             System.err.println("Erreur de format dans le fichier : " + e.getMessage());
         }
     }

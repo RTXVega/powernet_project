@@ -1,6 +1,8 @@
 package powernet.fx.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 
 import powernet.core.AutoSolver;
 import powernet.core.CostCalculator;
@@ -25,8 +27,14 @@ public class DashboardController {
             NetworkParser parser = new NetworkParser();
             this.currentNetwork = parser.parse(file.toPath());
             updateCanvas();
+        } catch (ParseException e) {
+            showAlert("Erreur de format", e.getMessage(), javafx.scene.control.Alert.AlertType.ERROR);
+        } catch (IOException e) {
+            showAlert("Erreur de lecture", e.getMessage(), javafx.scene.control.Alert.AlertType.ERROR);
         } catch (Exception e) {
-            e.printStackTrace(); // TODO: Afficher une alerte en cas d'erreur
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur inattendue : " + e.getMessage(),
+                    javafx.scene.control.Alert.AlertType.ERROR);
         }
     }
 
