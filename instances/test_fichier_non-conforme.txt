@@ -1,6 +1,6 @@
 generateur(gen1,70). 
 generateur(gen2,35).
-generteur(gen3,40).     .
+generateur(gén3,40).     .
 generateur(gen4,62). 
 generateur(gen5,42).
 generateur(gen6,83).
