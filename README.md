@@ -43,7 +43,7 @@ powernet_project/
 
 ## Compiler et exécuter un fichier .jar (Mode CLI uniquement)
 1. Dans la racine, exécuter `mvn -DskipTests clean package` pour complier.
-2. Exécuter `java -jar target/powernet-2.0.0.jar ./instances/instance.txt --lambda 10` (par exemple pour ./instances/instance1.txt avec lambda 10)
+2. Exécuter `java -jar target/powernet-2.0.0.jar ./instances/instance1.txt --lambda 10` (par exemple pour ./instances/instance1.txt avec lambda 10)
 
 ## Compiler et exécuter via Maven (Mode CLI et GUI)
 - CLI : Exécuter sans argument `mvn -DskipTests clean compile exec:java -Dexec.mainClass=powernet.cli.App`
