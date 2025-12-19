@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.*;
 
+// Passe en revue House : création valide, calcul de demande, validation des identifiants
+// (null/vides/espaces) et couverture des différents niveaux de consommation.
 @DisplayName("Tests du modèle House")
 class HouseTest {
 
@@ -18,6 +20,7 @@ class HouseTest {
         house = new House("M1", Consumption.NORMAL);
     }
 
+    // Vérifie la création d'une maison avec des valeurs valides.
     @Test
     @DisplayName("Doit créer une maison avec un identifiant et un niveau de consommation valides")
     void testHouseCreation() {
@@ -26,12 +29,14 @@ class HouseTest {
         assertThat(house.getLevel()).isEqualTo(Consumption.NORMAL);
     }
 
+    // S'assure que la demande en kW correspond au niveau de consommation.
     @Test
     @DisplayName("Doit retourner la demande correcte en kW")
     void testDemandKw() {
         assertThat(house.demandKw()).isEqualTo(20);
     }
 
+    // Vérifie les demandes pour différents niveaux de consommation.
     @Test
     @DisplayName("Doit gérer différents niveaux de consommation")
     void testDifferentConsumptionLevels() {
@@ -42,6 +47,7 @@ class HouseTest {
         assertThat(forte.demandKw()).isEqualTo(40);
     }
 
+    // Contrôle qu'un identifiant null déclenche une exception.
     @Test
     @DisplayName("Doit lever une exception pour un identifiant null")
     void testNullId() {
@@ -50,6 +56,7 @@ class HouseTest {
             .hasMessageContaining("Identifiant maison invalide");
     }
 
+    // Contrôle qu'un identifiant vide est refusé.
     @Test
     @DisplayName("Doit lever une exception pour un identifiant vide")
     void testEmptyId() {
@@ -58,6 +65,7 @@ class HouseTest {
             .hasMessageContaining("Identifiant maison invalide");
     }
 
+    // Vérifie qu'un niveau de consommation null est rejeté.
     @Test
     @DisplayName("Doit lever une exception pour un niveau de consommation null")
     void testNullConsumption() {
@@ -66,6 +74,7 @@ class HouseTest {
             .hasMessageContaining("Niveau de consommation requis");
     }
 
+    // S'assure que l'identifiant est bien tronqué des espaces.
     @Test
     @DisplayName("Doit tronquer l'identifiant avec des espaces")
     void testIdTrimming() {
@@ -73,6 +82,7 @@ class HouseTest {
         assertThat(houseWithSpaces.getId()).isEqualTo("M1");
     }
 
+    // Valide plusieurs identifiants acceptables pour une maison.
     @ParameterizedTest
     @ValueSource(strings = {"M1", "M2", "M100", "HOUSE_1"})
     @DisplayName("Doit accepter plusieurs identifiants de maison valides")

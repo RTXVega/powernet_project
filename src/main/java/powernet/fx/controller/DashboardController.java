@@ -11,6 +11,10 @@ import powernet.core.NetworkParser;
 import powernet.core.NetworkWriter;
 import powernet.fx.view.NetworkCanvas;
 
+
+
+// Contrôleur principal : orchestre le cycle de vie d'un réseau (chargement, sauvegarde, optimisation).
+// Valide les actions utilisateur, invoque le solveur et les IO (parser/writer) puis rafraîchit le canvas.
 public class DashboardController {
 
     private Network currentNetwork;

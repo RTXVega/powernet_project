@@ -15,6 +15,9 @@ import powernet.core.Network;
 import powernet.model.Generator;
 import powernet.model.House;
 
+
+// Canvas JavaFX : dessine générateurs, maisons et connexions avec indicateurs de charge/surcharge.
+// Calcule une disposition simple, trace les liens en arrière-plan et ajoute tooltips/labels pour l'UI.
 public class NetworkCanvas extends Pane {
 
     private static final double NODE_RADIUS = 20;

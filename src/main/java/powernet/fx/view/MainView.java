@@ -7,6 +7,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import powernet.fx.controller.DashboardController;
 
+
+// Vue principale : assemble le canvas réseau, le panneau de contrôle et la légende en layout BorderPane.
+// Initialise le contrôleur et gère l'entête (titre, auteurs) pour l'application graphique.
 public class MainView extends BorderPane {
 
     private final NetworkCanvas networkCanvas;

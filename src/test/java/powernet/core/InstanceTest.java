@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
+// Rejoue les fichiers d'instances de référence : parse, optimisation AutoSolver puis vérification
+// des coûts calculés avec une tolérance définie pour chaque jeu de données.
 @DisplayName("Tests des fichiers d'instance")
 // Les coûts calculés doivent être égaux aux références du fichier Excel.
 // Une tolérance +/- 0,4 sur le coût appliquée
@@ -14,6 +16,7 @@ class InstanceTest {
 
     private static final double EPS_04 = 0.4; 
 
+    // Vérifie le coût obtenu pour l'instance1 par rapport à la référence.
     @Test
     @DisplayName("Test instance1.txt")
     void TestInstance1() throws Exception {
@@ -30,6 +33,7 @@ class InstanceTest {
         assertEquals(expectedCost, actualCost, EPS_04);
     }
 
+    // Vérifie le coût attendu pour l'instance2.
     @Test
     @DisplayName("Test instance2.txt")
     void TestInstance2() throws Exception {
@@ -46,6 +50,7 @@ class InstanceTest {
         assertEquals(expectedCost, actualCost, EPS_04);
     }
 
+    // Vérifie l'instance3 avec un coût de référence nul.
     @Test
     @DisplayName("Test instance3.txt")
     void TestInstance3() throws Exception {
@@ -62,6 +67,7 @@ class InstanceTest {
         assertEquals(expectedCost, actualCost, EPS_04);
     }
 
+    // Vérifie l'instance4 avec un coût attendu nul.
     @Test
     @DisplayName("Test instance4.txt")
     void TestInstance4() throws Exception {
@@ -77,6 +83,7 @@ class InstanceTest {
          System.out.println(actualCost);
         assertEquals(expectedCost, actualCost, EPS_04);
     }
+    // Vérifie le coût cible pour l'instance5.
     @Test
     @DisplayName("Test instance5.txt")
     void TestInstance5() throws Exception {
@@ -93,6 +100,7 @@ class InstanceTest {
 
         assertEquals(expectedCost, actualCost, EPS_04);
     }
+    // Vérifie le coût obtenu pour l'instance6.
     @Test
     @DisplayName("Test instance6.txt")
     void TestInstance6() throws Exception {
@@ -109,6 +117,7 @@ class InstanceTest {
 
         assertEquals(expectedCost, actualCost, EPS_04);
     }
+    // Vérifie le coût calculé pour l'instance7.
     @Test
     @DisplayName("Test instance7.txt")
     void TestInstance7() throws Exception {

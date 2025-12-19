@@ -1,5 +1,7 @@
 package powernet.fx.view;
 
+import java.io.File;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,8 +14,10 @@ import javafx.stage.FileChooser;
 import powernet.core.CostCalculator;
 import powernet.fx.controller.DashboardController;
 
-import java.io.File;
 
+
+// Panneau latéral : centralise les commandes UI (ouverture, sauvegarde, optimisation, lambda).
+// Affiche en direct les métriques de coût/dispersion/surcharge et colore les alertes visuelles.
 public class ControlPanel extends VBox {
 
     private final DashboardController controller;

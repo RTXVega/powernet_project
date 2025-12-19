@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import powernet.fx.view.MainView;
 
+
+// Point d'entrée JavaFX : instancie la vue principale, crée la scène et lance l'UI.
+// Configure le titre/fenêtre et délègue toute la logique métier aux couches vues/contrôleurs.
 public class PowerNetApp extends Application {
 
     @Override

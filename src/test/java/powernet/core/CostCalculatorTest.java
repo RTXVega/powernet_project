@@ -10,6 +10,8 @@ import powernet.model.Consumption;
 import powernet.model.Generator;
 import powernet.model.House;
 
+// Passe en revue le calculateur de coût : dispersion sur multiples générateurs, surcharge,
+// impact de lambda, gestion des maisons déconnectées et cohérence des objets Cost.
 @DisplayName("Tests du calculateur de coût")
 class CostCalculatorTest {
 
@@ -22,6 +24,7 @@ class CostCalculatorTest {
         calculator = new CostCalculator(2.0); // lambda = 2,0
     }
 
+    // Vérifie que le coût est nul pour un réseau sans nœuds.
     @Test
     @DisplayName("Doit retourner 0 pour un réseau vide")
     void testEmptyNetworkCost() {
@@ -32,6 +35,7 @@ class CostCalculatorTest {
         assertThat(cost.total()).isEqualTo(0.0);
     }
 
+    // Mesure le coût avec une maison reliée à un seul générateur.
     @Test
     @DisplayName("Doit calculer le coût pour 1 maison et 1 générateur")
     void testSingleHouseAndGenerator() {
@@ -48,6 +52,7 @@ class CostCalculatorTest {
         assertThat(cost.total()).isEqualTo(0.0);
     }
 
+    // Vérifie le calcul de dispersion entre plusieurs générateurs.
     @Test
     @DisplayName("Doit calculer la dispersion avec plusieurs générateurs")
     void testDispersionWithMultipleGenerators() {
@@ -68,6 +73,7 @@ class CostCalculatorTest {
         assertThat(cost.total()).isEqualTo(0.2);
     }
 
+    // Teste la surcharge quand la charge dépasse la capacité du générateur.
     @Test
     @DisplayName("Doit calculer la surcharge quand la charge dépasse la capacité")
     void testSurchargeCalculation() {
@@ -83,6 +89,7 @@ class CostCalculatorTest {
         assertThat(cost.total()).isGreaterThan(cost.dispersion());
     }
 
+    // Vérifie que le coefficient lambda influe bien sur le coût total.
     @Test
     @DisplayName("Doit appliquer le coefficient lambda à la surcharge dans le coût total")
     void testLambdaCoefficientApplication() {
@@ -104,6 +111,7 @@ class CostCalculatorTest {
         assertThat(cost2.total()).isGreaterThan(cost1.total());
     }
 
+    // S'assure qu'un lambda nul annule l'impact de la surcharge.
     @Test
     @DisplayName("Doit gérer un coefficient lambda nul")
     void testZeroLambda() {
@@ -118,6 +126,7 @@ class CostCalculatorTest {
         assertThat(cost.total()).isEqualTo(cost.dispersion());
     }
 
+    // Évalue le coût avec plusieurs maisons sur un même générateur.
     @Test
     @DisplayName("Doit calculer le coût pour plusieurs maisons sur un même générateur")
     void testMultipleHousesSameGenerator() {
@@ -139,6 +148,7 @@ class CostCalculatorTest {
         assertThat(cost.surcharge()).isEqualTo(0.0);
     }
 
+    // Vérifie que les maisons non connectées sont ignorées dans le calcul.
     @Test
     @DisplayName("Doit gérer les maisons déconnectées (ignorées dans la charge)")
     void testDisconnectedHouses() {
@@ -154,6 +164,7 @@ class CostCalculatorTest {
         assertThat(cost.surcharge()).isEqualTo(0.0);
     }
 
+    // Calcule un scénario plus complexe avec plusieurs maisons et générateurs.
     @Test
     @DisplayName("Doit calculer le coût dans un scénario complexe")
     void testComplexScenario() {
@@ -176,6 +187,7 @@ class CostCalculatorTest {
         assertThat(cost.surcharge()).isEqualTo(0.0); // Pas de surcharge
     }
 
+    // Vérifie que les accesseurs de Cost retournent bien les valeurs attendues.
     @Test
     @DisplayName("L'objet Cost doit fournir dispersion, surcharge et total")
     void testCostObjectGetters() {

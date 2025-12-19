@@ -12,6 +12,8 @@ import powernet.model.Consumption;
 import powernet.model.Generator;
 import powernet.model.House;
 
+// Couvre l'API Network : ajout/validation des nœuds, connexions et reconnexions, calculs de charge,
+// cohérence des suppressions et immutabilité des vues exposées (maisons, générateurs, affectations).
 @DisplayName("Tests du cœur du réseau")
 class NetworkTest {
 
@@ -22,6 +24,7 @@ class NetworkTest {
         network = new Network();
     }
 
+    // Vérifie qu'un réseau nouvellement créé est vide.
     @Test
     @DisplayName("Doit créer un réseau vide")
     void testCreateEmptyNetwork() {
@@ -30,6 +33,7 @@ class NetworkTest {
         assertThat(network.assignment()).isEmpty();
     }
 
+    // S'assure qu'une maison peut être ajoutée et retrouvée.
     @Test
     @DisplayName("Doit ajouter une maison")
     void testAddSingleHouse() {
@@ -41,6 +45,7 @@ class NetworkTest {
         assertThat(network.houses().get("M1")).isEqualTo(house);
     }
 
+    // Vérifie l'ajout de plusieurs maisons distinctes.
     @Test
     @DisplayName("Doit ajouter plusieurs maisons")
     void testAddMultipleHouses() {
@@ -52,6 +57,7 @@ class NetworkTest {
         assertThat(network.houses()).containsKeys("M1", "M2", "M3");
     }
 
+    // Contrôle que l'ajout d'une maison en double lève une exception.
     @Test
     @DisplayName("Doit lever une exception pour un identifiant de maison en double")
     void testAddDuplicateHouse() {
@@ -62,6 +68,7 @@ class NetworkTest {
             .hasMessageContaining("Maison déjà déclarée");
     }
 
+    // S'assure qu'un générateur peut être ajouté au réseau.
     @Test
     @DisplayName("Doit ajouter un générateur")
     void testAddSingleGenerator() {
@@ -73,6 +80,7 @@ class NetworkTest {
         assertThat(network.generators().get("G1")).isEqualTo(generator);
     }
 
+    // Vérifie l'ajout de plusieurs générateurs distincts.
     @Test
     @DisplayName("Doit ajouter plusieurs générateurs")
     void testAddMultipleGenerators() {
@@ -84,6 +92,7 @@ class NetworkTest {
         assertThat(network.generators()).containsKeys("G1", "G2", "G3");
     }
 
+    // Contrôle qu'un identifiant de générateur dupliqué déclenche une erreur.
     @Test
     @DisplayName("Doit lever une exception pour un identifiant de générateur en double")
     void testAddDuplicateGenerator() {
@@ -94,6 +103,7 @@ class NetworkTest {
             .hasMessageContaining("Générateur déjà déclaré");
     }
 
+    // Vérifie qu'une maison peut être connectée à un générateur.
     @Test
     @DisplayName("Doit connecter une maison à un générateur")
     void testConnect() {
@@ -105,6 +115,7 @@ class NetworkTest {
         assertThat(network.assignment().get("M1")).isEqualTo("G1");
     }
 
+    // S'assure qu'une maison peut être reconnectée à un autre générateur.
     @Test
     @DisplayName("Doit reconnecter une maison à un autre générateur")
     void testReconnect() {
@@ -119,6 +130,7 @@ class NetworkTest {
         assertThat(network.assignment().get("M1")).isEqualTo("G2");
     }
 
+    // Vérifie qu'une maison inconnue ne peut pas être connectée.
     @Test
     @DisplayName("Doit lever une exception lors de la connexion d'une maison inconnue")
     void testConnectUnknownHouse() {
@@ -129,6 +141,7 @@ class NetworkTest {
             .hasMessageContaining("Maison inconnue");
     }
 
+    // Vérifie qu'un générateur inconnu ne peut pas être utilisé pour une connexion.
     @Test
     @DisplayName("Doit lever une exception lors de la connexion à un générateur inconnu")
     void testConnectToUnknownGenerator() {
@@ -139,6 +152,7 @@ class NetworkTest {
             .hasMessageContaining("Générateur inconnu");
     }
 
+    // Contrôle la suppression d'une connexion existante.
     @Test
     @DisplayName("Doit supprimer une connexion")
     void testRemoveConnection() {
@@ -151,6 +165,7 @@ class NetworkTest {
         assertThat(network.assignment()).isEmpty();
     }
 
+    // Vérifie qu'on ne peut pas supprimer une connexion inexistante.
     @Test
     @DisplayName("Doit lever une exception lors de la suppression d'une connexion inexistante")
     void testRemoveNonExistentConnection() {
@@ -162,6 +177,7 @@ class NetworkTest {
             .hasMessageContaining("n'a aucune connexion");
     }
 
+    // Vérifie qu'une connexion incohérente n'est pas supprimable.
     @Test
     @DisplayName("Doit lever une exception lors de la suppression d'une connexion incohérente")
     void testRemoveMismatchedConnection() {
@@ -175,6 +191,7 @@ class NetworkTest {
             .hasMessageContaining("n'existe pas");
     }
 
+    // Calcule la charge lorsqu'une seule maison est connectée.
     @Test
     @DisplayName("Doit calculer la charge pour une seule maison")
     void testComputeLoadsSingleHouse() {
@@ -188,6 +205,7 @@ class NetworkTest {
         assertThat(loads.get("G1")).isEqualTo(20);
     }
 
+    // Calcule la charge cumulée de plusieurs maisons sur le même générateur.
     @Test
     @DisplayName("Doit calculer la charge de plusieurs maisons sur le même générateur")
     void testComputeLoadsMultipleHouses() {
@@ -205,6 +223,7 @@ class NetworkTest {
         assertThat(loads.get("G1")).isEqualTo(70); // 10 + 20 + 40
     }
 
+    // Mesure les charges séparées sur plusieurs générateurs.
     @Test
     @DisplayName("Doit calculer les charges pour plusieurs générateurs")
     void testComputeLoadsMultipleGenerators() {
@@ -223,6 +242,7 @@ class NetworkTest {
         assertThat(loads.get("G2")).isEqualTo(40);
     }
 
+    // Vérifie qu'une maison déconnectée ne contribue pas à la charge.
     @Test
     @DisplayName("Doit retourner 0 de charge pour les maisons déconnectées")
     void testComputeLoadsDisconnected() {
@@ -238,6 +258,7 @@ class NetworkTest {
         assertThat(loads.get("G1")).isEqualTo(20); // Charge uniquement de M1
     }
 
+    // S'assure qu'un générateur sans maison a une charge nulle.
     @Test
     @DisplayName("Doit retourner une charge nulle pour un générateur sans maison")
     void testComputeLoadsEmptyGenerator() {
@@ -253,6 +274,7 @@ class NetworkTest {
         assertThat(loads.get("G2")).isEqualTo(0);
     }
 
+    // Vérifie le résultat lorsque le réseau est vide.
     @Test
     @DisplayName("Doit retourner des charges vides pour un réseau vide")
     void testComputeLoadsEmptyNetwork() {
@@ -260,6 +282,7 @@ class NetworkTest {
         assertThat(loads).isEmpty();
     }
 
+    // Vérifie que la vue des maisons ne peut pas être modifiée.
     @Test
     @DisplayName("Doit renvoyer une vue non modifiable des maisons")
     void testHousesUnmodifiable() {
@@ -269,6 +292,7 @@ class NetworkTest {
             .isInstanceOf(UnsupportedOperationException.class);
     }
 
+    // Vérifie que la vue des générateurs est protégée contre les modifications.
     @Test
     @DisplayName("Doit renvoyer une vue non modifiable des générateurs")
     void testGeneratorsUnmodifiable() {
@@ -278,6 +302,7 @@ class NetworkTest {
             .isInstanceOf(UnsupportedOperationException.class);
     }
 
+    // Vérifie que la vue des affectations est immuable.
     @Test
     @DisplayName("Doit renvoyer une vue non modifiable des affectations")
     void testAssignmentUnmodifiable() {

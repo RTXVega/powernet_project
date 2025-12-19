@@ -9,9 +9,11 @@ import powernet.model.Consumption;
 import powernet.model.Generator;
 import powernet.model.House;
 
+// Vérifie le rendu texte : formatage des générateurs, maisons et métriques de coût dans le résumé imprimé.
 @DisplayName("Tests de l'impression de réseau")
 class NetworkPrinterTest {
 
+    // Vérifie le formatage du résumé texte pour les générateurs, maisons et coûts.
     @Test
     @DisplayName("Formate les générateurs, maisons et coûts dans le résumé")
     void printSummary_formatsGeneratorsHousesAndCosts() {

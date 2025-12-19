@@ -13,9 +13,11 @@ import powernet.model.Consumption;
 import powernet.model.Generator;
 import powernet.model.House;
 
+// Vérifie la sérialisation d'un réseau en texte : format, ordre et contenu attendus dans le fichier.
 @DisplayName("Tests de la sauvegarde de réseau")
 class NetworkWriterTest {
 
+    // Vérifie que la sérialisation écrit exactement le format attendu.
     @Test
     @DisplayName("Écrit le format attendu dans le fichier de sortie")
     void save_writesExpectedFormat() throws IOException {

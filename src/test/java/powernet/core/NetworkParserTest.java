@@ -9,9 +9,12 @@ import java.text.ParseException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+// Vérifie le parseur : construction d'un réseau à partir d'un fichier valide et qualité des messages
+// d'erreur (ligne concernée) pour connexions invalides ou caractères illégaux.
 @DisplayName("Tests du parseur de réseau")
 class NetworkParserTest {
 
+    // Vérifie qu'un fichier valide est correctement parsé en réseau.
     @Test
     @DisplayName("Doit construire le réseau depuis un fichier valide")
     void parse_validFile_buildsNetwork() throws IOException, ParseException {
@@ -27,6 +30,7 @@ class NetworkParserTest {
         assertEquals("gen4", net.assignment().get("maison7"));
     }
 
+    // Contrôle que les connexions invalides déclenchent une exception avec numéro de ligne.
     @Test
     @DisplayName("Signale la ligne lorsqu'une connexion est invalide")
     void parse_invalidConnection_throwsWithLineNumber() throws IOException {
@@ -48,6 +52,7 @@ class NetworkParserTest {
                 "Expected line number in message");
     }
 
+    // Vérifie le signalement de caractères non alphanumériques avec la ligne concernée.
     @Test
     @DisplayName("Refuse les caracteres non alphanumeriques en signalant la ligne")
     void parse_invalidCharacter_reportsLine() throws IOException {
