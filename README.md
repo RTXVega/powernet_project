@@ -11,6 +11,8 @@ Rui MA
 powernet_project/
 ├─ README.md              # guide du projet et commandes
 ├─ ALGORITHME.md          # présentation détaillée de l'algorithme
+├─ instances/             # fichiers d'instances d'entrée
+├─ pom.xml                # configuration Maven
 ├─ src/main/java/powernet/
 │  ├─ model/
 │  │  ├─ Consumption.java   # niveaux de consommation (BASSE, NORMAL, FORTE)
